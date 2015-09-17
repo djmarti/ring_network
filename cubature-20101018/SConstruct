@@ -1,0 +1,11 @@
+import os
+
+srcs = Split("""my_test.c
+                cubature.c""")
+
+cflags = '-std=gnu99 -O3 --pedantic -W -Wall -Winline -Werror \
+-Wpointer-arith -Wcast-qual \
+-Wcast-align -Wwrite-strings -Wnested-externs \
+-fshort-enums -fno-common'
+opt = Environment(CFLAGS = cflags + ' -DHAVE_INLINE=1') #LINKFLAGS = ['-pg'])
+opt.Program(srcs, LIBS=['m'])
