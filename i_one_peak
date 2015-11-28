@@ -1,0 +1,48 @@
+#
+# Configuration of external inputs 
+#
+# Distribution of location parameter:
+#   Peak 0 (1.00): mu =  0.0, dispersion = 50.0
+#
+# Single pulses
+#   Each line specifies the characteristics of a particular pulse of stimulation,
+#   and is structured in 5 different fields separated by spaces. The order of the
+#   fields is: 
+#       1. time onset of the pulse, 
+#       2. duration of the pulse
+#       3. angle (in degrees) where the pulse is applied, 
+#       4. intensity of the pulse,
+#       5. concentration of the pulse (in a von Mises distribution)
+#
+# time onset    duration      theta     Imax   concentration
+# -----------------------------------------------------------
+        0.10        0.10       0.55     0.20           10.00
+        0.21        0.10       2.56     0.20           10.00
+        0.32        0.10      -1.18     0.20           10.00
+        0.43        0.10      11.34     0.20           10.00
+        0.54        0.10       6.68     0.20           10.00
+        0.65        0.10       1.32     0.20           10.00
+        0.76        0.10       2.52     0.20           10.00
+        0.87        0.10       1.81     0.20           10.00
+        0.98        0.10      -6.05     0.20           10.00
+        1.09        0.10       4.19     0.20           10.00
+        1.20        0.10       1.72     0.20           10.00
+        1.31        0.10       1.59     0.20           10.00
+        1.42        0.10     -11.03     0.20           10.00
+        1.53        0.10      -0.73     0.20           10.00
+        1.64        0.10       2.46     0.20           10.00
+        1.75        0.10       2.01     0.20           10.00
+        1.86        0.10       0.95     0.20           10.00
+        1.97        0.10      -4.69     0.20           10.00
+        2.08        0.10      -2.31     0.20           10.00
+        2.19        0.10       2.70     0.20           10.00
+        2.30        0.10      -1.31     0.20           10.00
+        2.41        0.10       3.06     0.20           10.00
+        2.52        0.10      -1.07     0.20           10.00
+        2.63        0.10       2.49     0.20           10.00
+        2.74        0.10      -3.52     0.20           10.00
+        2.85        0.10      -1.80     0.20           10.00
+        2.96        0.10       2.10     0.20           10.00
+        3.07        0.10      -1.69     0.20           10.00
+        3.18        0.10      -7.61     0.20           10.00
+        3.29        0.10      -1.77     0.20           10.00

@@ -1,0 +1,50 @@
+#
+# Configuration of external inputs 
+#
+# Distribution of location parameter:
+#   Peak 0 (0.33): mu = -60.0, dispersion = 40.0
+#   Peak 1 (0.33): mu =  0.0, dispersion = 40.0
+#   Peak 2 (0.33): mu = 60.0, dispersion = 40.0
+#
+# Single pulses
+#   Each line specifies the characteristics of a particular pulse of stimulation,
+#   and is structured in 5 different fields separated by spaces. The order of the
+#   fields is: 
+#       1. time onset of the pulse, 
+#       2. duration of the pulse
+#       3. angle (in degrees) where the pulse is applied, 
+#       4. intensity of the pulse,
+#       5. concentration of the pulse (in a von Mises distribution)
+#
+# time onset    duration      theta     Imax   concentration
+# -----------------------------------------------------------
+         0.4         0.2      -56.9      0.3             5.0
+         0.6         0.2       65.6      0.3             5.0
+         1.1         0.2       -1.2      0.3             5.0
+         1.4         0.2        3.0      0.3             5.0
+         1.8         0.2      -60.5      0.3             5.0
+         2.1         0.2       58.1      0.3             5.0
+         2.5         0.2      -59.7      0.3             5.0
+         2.8         0.2        8.8      0.3             5.0
+         3.2         0.2       56.6      0.3             5.0
+         3.5         0.2      -71.4      0.3             5.0
+         3.9         0.2       68.8      0.3             5.0
+         4.2         0.2       58.4      0.3             5.0
+         4.6         0.2      -66.5      0.3             5.0
+         5.0         0.2      -56.6      0.3             5.0
+         5.3         0.2       -1.7      0.3             5.0
+         5.7         0.2       61.2      0.3             5.0
+         6.0         0.2       -4.1      0.3             5.0
+         6.3         0.2      -50.6      0.3             5.0
+         6.7         0.2       -1.2      0.3             5.0
+         7.0         0.2        0.0      0.3             5.0
+         7.4         0.2       54.4      0.3             5.0
+         7.8         0.2       62.2      0.3             5.0
+         8.1         0.2       -8.7      0.3             5.0
+         8.4         0.2       49.8      0.3             5.0
+         8.8         0.2      -55.7      0.3             5.0
+         9.2         0.2       -0.1      0.3             5.0
+         9.5         0.2      -53.6      0.3             5.0
+         9.8         0.2       54.7      0.3             5.0
+        10.2         0.2      -51.9      0.3             5.0
+        10.5         0.2       -4.4      0.3             5.0

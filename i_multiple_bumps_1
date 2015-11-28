@@ -1,0 +1,30 @@
+#
+# Configuration of external inputs 
+#
+# Each line specifies the characteristics of a particular pulse of stimulation,
+# and is structured in 5 different fields separated by spaces. The order of the
+# fields is: 
+#     1. time onset of the pulse, 
+#     2. duration of the pulse
+#     3. angle (in degrees) where the pulse is applied, 
+#     4. intensity of the pulse,
+#     5. concentration of the pulse (in a von Mises distribution)
+#
+# time onset    duration      theta     Imax   concentration
+# -----------------------------------------------------------
+   0.01               1.0        0.0      1.0         10.0
+#   0.1               1.0       -45.0      1.0         10.0
+#!   0.4               2.5          0.0      0.2       30.0
+#!   1.2               2.5        -50.0      0.2       30.0
+#   2.5              0.4          8.0      0.2       10.0
+#   3.1              0.4         11.0      0.2       10.0
+#   4.0              0.5         10.5      0.2       10.0
+#   4.8              0.4         12.0      0.2       10.0
+#   5.5              0.5          9.0      0.2       10.0
+# 11.0              0.1          5.0      0.1       10.0
+# 13.0              0.1          5.0      0.1       10.0
+# 15.0              0.1          5.0      0.1       10.0
+#   2.0              0.1        30.0      0.1       10.0
+#   3.0              0.1       -20.0      0.1       10.0
+#   4.0              0.1        15.0      0.1       10.0
+#   5.0              0.1         5.0      0.1       10.0
