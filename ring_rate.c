@@ -1,6 +1,6 @@
 #include "ring_rate.h"
 
-/* External (global) variables are not necessarily bad */
+/* A few external (global) variables are not necessarily bad */
 
 const int TIME_WINDOW_WIDTH = 500;     /* in time units */
 const int N_SNAPSHOTS = 20;     /* number of frames in a 2D movie (per trial) */
