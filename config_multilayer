@@ -1,0 +1,65 @@
+# Output files
+# ------------
+extinputs_file = "i_T10_one_peak_different_durations.txt"
+output_file = "rates"
+normalize = 1
+
+# Simulation parameters
+# ---------------------
+
+# Time step for Euler method
+dt = 2e-3
+
+# Total simulated time (time units)
+T = 12.0
+
+# Parameters sigmoid
+# ------------------
+
+# Number of neurons
+N = 256
+
+# Number of layers
+N_layers = 4
+
+# Maximum rate
+max_rate = 1.0
+
+# Temperature parameter
+beta = 3.0
+
+# Bias / soft threshold
+sigm_thr = 1.0
+
+
+# Connectivity parameters
+# -----------------------
+
+# Recurrent connections
+#
+# coefficient excitatory profile
+J_rec_E = 1.0 
+
+# coefficient inhibitory profile
+J_rec_I = 1.0 
+
+# concentration parameter exc. profile 500
+m_rec_E = 5 
+
+# concentration parameter inh. profile
+m_rec_I = 1
+
+
+# Feedforward connections
+#
+# coefficient excitatory profile
+J_ff_E = 5.0 
+
+# coefficient inhibitory profile
+J_ff_I = 0.2 
+
+# concentration parameter exc. profile 500
+m_ff_E = 10
+
+# concentration parameter inh. profile
+m_ff_I = 1
