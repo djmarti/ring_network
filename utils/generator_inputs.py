@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-This script generates an 'input' data file specifying the time onset,
-duration, location, concentration, and intensity of each pulse in the input
-stream. The data could have been entered by hand, but the script comes in handy
-when the input stream contains more than 5 pulses.
+This script generates a few 'input' descriptor files, each of which specifies
+the time onset, duration, location, concentration, and intensity of each pulse
+in the input stream. The data could have been entered by hand, but the script
+comes in handy when the input stream contains more than 5 pulses.
 """
 
 import numpy as np
@@ -39,71 +39,11 @@ I_s = 0.2
 concentration = 10
 n_params = 5
 
-for c in mus:
-    n_peaks = len(mus[c])
-    n_pulses_peak = int(
-        (T_max - onset) /
-        ((duration + gap_between_pulses) * n_peaks))
-    n_rows = n_peaks * n_pulses_peak
-    A = np.zeros((n_rows, n_params))
-
-    # Fill the entries
-    for i, mu in enumerate(mus[c]):
-        init = i * n_pulses_peak
-        end = (i + 1) * n_pulses_peak
-        A[init:end, 2] = np.degrees(
-            np.random.vonmises(mu=mu * 2,
-                               kappa=dispersion[c],
-                               size=(n_pulses_peak))) / 2
-    indices = np.arange(n_rows).tolist()
-
-    # Uncomment this if you want a really random process
-    indices_shff = np.array(sample(indices, n_rows))
-
-    # This will generate an alternating sequence:
-    # indices_resorted = zeros_like(indices)
-    # for i in arange(n_peaks):
-    #     init = i * n_pulses_peak
-    #     end = (i + 1) * n_pulses_peak
-    #     indices_resorted[init:end] = arange(i, n_rows, n_peaks)
-
-    # Common values for both peaks
-    A[:, 0] = onset + indices_shff * (duration + gap_between_pulses)
-    # A[:, 0] = onset + indices_resorted * (duration + gap_between_pulses)
-    A[:, 1] = duration * np.ones(n_rows)
-    A[:, 3] = I_s * np.ones(n_rows)
-    A[:, 4] = concentration * np.ones(n_rows)
-
-    A = A[np.argsort(A[:, 0])]
-
-    ## ----------------------------------------------------------
-    ## Apply a slow drift at the end of
-    ## the sequence
-    ## n_plses = 180
-    ## B = zeros((n_plses, n_params))
-    ## speed = 0.6 # degree / s
-    ## t_drift_starts = A[-1,0] + A[-1,1] + 2 * gap_between_pulses
-    ## A[-1,2] = mus[0] - 0.10
-    ## duration = 0.2
-    ## B[:,0] = t_drift_starts + arange(n_plses) * duration # (duration + gap_between_pulses)
-    ## B[:,1] = duration * ones(n_plses)
-    ## B[:,2] = mus[0] + speed * (B[:,0] - t_drift_starts)
-    ## B[:,3] = I_s * ones(n_plses)
-    ## B[:,4] = concentration * ones(n_plses)
-    ##
-    ## A = vstack([A,B])
-
-    init_string = """#
-# Configuration of external inputs
+description_input_parameters = """# Configuration of external inputs
 #
 # Distribution of location parameter:
 """
-    prob_peaks = 1.0 / len(mus[c])
-    for i, m in enumerate(mus[c]):
-        init_string += ("#   Peak %d (%4.2f): mu = %4.1f, dispersion = %4.1f\n"
-                        % (i, prob_peaks, np.degrees(m), dispersion[c]))
-
-    init_string += """#
+description_input_format = """#
 # Single pulses
 #   Each line specifies the characteristics of a particular pulse of stimulation,
 #   and is structured in 5 different fields, separated by spaces. The order of the
@@ -119,9 +59,68 @@ for c in mus:
 # -----------------------------------------------------------
 """
 
-    fname = "i_%s_really_shuffled" % c
-    #fname = "i_%s_peak_with_drift" % numbers[n_peaks-1]
-    #fname = "test"
+for stim_type, location_peaks in mus.items():
+    n_peaks = len(location_peaks)
+    n_pulses_peak = int(
+        (T_max - onset) /
+        ((duration + gap_between_pulses) * n_peaks))
+    n_rows = n_peaks * n_pulses_peak
+    A = np.zeros((n_rows, n_params))
+
+    # Fill the entries
+    for i, mu in enumerate(location_peaks):
+        init = i * n_pulses_peak
+        end = (i + 1) * n_pulses_peak
+        A[init:end, 2] = np.degrees(
+            np.random.vonmises(mu=mu * 2,
+                               kappa=dispersion[stim_type],
+                               size=(n_pulses_peak))) / 2
+    indices = np.arange(n_rows).tolist()
+
+    # Uncomment this if you want a really random process
+    indices_shff = np.array(sample(indices, n_rows))
+
+    # This will generate an alternating sequence:
+    #  indices_resorted = zeros_like(indices)
+    #  for i in arange(n_peaks):
+    #      init = i * n_pulses_peak
+    #      end = (i + 1) * n_pulses_peak
+    #      indices_resorted[init:end] = arange(i, n_rows, n_peaks)
+
+    # Common values for both peaks
+    A[:, 0] = onset + indices_shff * (duration + gap_between_pulses)
+    # A[:, 0] = onset + indices_resorted * (duration + gap_between_pulses)
+    A[:, 1] = duration * np.ones(n_rows)
+    A[:, 3] = I_s * np.ones(n_rows)
+    A[:, 4] = concentration * np.ones(n_rows)
+
+    A = A[np.argsort(A[:, 0])]
+
+    ## ---------------------------------------------
+    ## Apply a slow drift at the end of the sequence
+    ##  n_plses = 180
+    ##  B = zeros((n_plses, n_params))
+    ##  speed = 0.6  # degree / s
+    ##  t_drift_starts = A[-1,0] + A[-1,1] + 2 * gap_between_pulses
+    ##  A[-1,2] = mus[0] - 0.10
+    ##  duration = 0.2
+    ##  B[:,0] = t_drift_starts + arange(n_plses) * duration # (duration + gap_between_pulses)
+    ##  B[:,1] = duration * ones(n_plses)
+    ##  B[:,2] = mus[0] + speed * (B[:,0] - t_drift_starts)
+    ##  B[:,3] = I_s * ones(n_plses)
+    ##  B[:,4] = concentration * ones(n_plses)
+    ##
+    ##  A = vstack([A,B])
+
+    init_string = description_input_parameters
+    prob_peaks = 1.0 / n_peaks
+    for i, m in enumerate(location_peaks):
+        init_string += ("#   Peak %d (%4.2f): mu = %4.1f, dispersion = %4.1f\n"
+                        % (i, prob_peaks, np.degrees(m), dispersion[stim_type]))
+
+    init_string += description_input_format
+    fname = "i_%s_really_shuffled" % stim_type
+    # fname = "i_%s_peak_with_drift" % numbers[n_peaks-1]
     with open(fname, "w") as fin:
         fin.write(init_string)
         for i in range(len(A)):
