@@ -106,7 +106,7 @@ This type of file describes how the network is stimulated. A self-descriptive ex
 ```
 
 Writing these files by hand become cumbersome when there are more
-than a few pulses. The directory `utils/` contains a python script called `generator_inputs.py` that generates input descriptions for random input patterns. One example of such random pattern would be "consecutive random pulses of a given duration, concentrated around a location, with a given concentration parameter". Feel free to modify the script to your needs.
+than a few pulses. The directory `utils/` contains a python script called `generator_inputs.py` that generates input descriptions for random input patterns. One simple example of such random pattern would be "consecutive random pulses of a given duration, concentrated around a location, with a given concentration parameter". Other, more complex patterns are also possible. Feel free to modify the script to your needs.
 
 ## License
 
