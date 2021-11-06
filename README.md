@@ -11,7 +11,7 @@ make  # or scons
 ```
 This will create a file called `simulate_trajectory`.
 
-The code relies on the [GNU Scientific Library](https://www.gnu.org/software/gsl/). To install it in a Debian-like box, run
+The code depends on the [GNU Scientific Library](https://www.gnu.org/software/gsl/). To install the library in a Debian-like box, run
 ```
 apt-get install libgsl0ldbl libgsl0ldbl-dev
 ```
@@ -30,7 +30,7 @@ A typical run of the executable would be
 ```shell
 ./simulate_trajectory -c config_pulse_sequences -x i_single_pulse
 ```
-where the file `config_pulse_sequences` is a configuration file specifying the network and synaptic parameters (see below), and `i_single_pulse` is an example of input descriptor, a file that describes the input pattern fed into the network (see below). You can find examples of configuration files under the `configurations` folder, and examples of input descriptors in the `example_input_patterns` folder.
+where the file `config_pulse_sequences` is a configuration file specifying the network and synaptic parameters (see below for details), and `i_single_pulse` is an example of input descriptor, a file that describes the input pattern fed into the network (see also below). You can find examples of configuration files under the `configurations` folder, and examples of input descriptors in the `example_input_patterns` folder.
 
 ### Configuration files
 
@@ -43,7 +43,7 @@ extinputs_file = "inputs"   # Default filename for of input descriptor
 output_rate_file = "rates"  # Prefix for the firing rate filename
 output_adaptation_file = "adaptation"      # and so on
 output_facilitation_file = "facilitation"
-normalize = 0
+normalize = 0               # Normalize rates to the maximum rate achieved during the simulation?
 
 # Simulation parameters
 # ---------------------
@@ -104,6 +104,9 @@ This type of file describes how the network is stimulated. A self-descriptive ex
 1.0              1.0        -45.0      1.0       10.0
 4.0              0.5         10.5      0.2       10.0
 ```
+
+Writing these files by hand become cumbersome when there are more
+than a few pulses. The directory `utils/` contains a python script called `generator_inputs.py` that generates input descriptions for random input patterns. One example of such random pattern would be "consecutive random pulses of a given duration, concentrated around a location, with a given concentration parameter". Feel free to modify the script to your needs.
 
 ## License
 
