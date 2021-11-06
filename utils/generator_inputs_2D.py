@@ -8,8 +8,8 @@ contains more than 5 pulses.'''
 import numpy as np
 
 # Peaks of stimulus features
-#mus = [ (-45, 30), (45,-50) ]      # Location of each peak
-mus = [ (1,-2) ]
+# mus = [ (-45, 30), (45,-50) ]      # Location of each peak
+mus = [ (1, -2) ]
 n_peaks = len(mus)
 dispersion = 20.    # concentration parameter of the distribution of input
                     # centers in a peak (assumed equal for all peaks)
@@ -18,7 +18,7 @@ Imax = 0.5
 duration = 0.2
 onset = 0.2
 concentration = 4       # Concentration parameter of each single pulse
-interpulse_sep = 0.5 * duration # silent period between pulses
+interpulse_sep = 0.5 * duration  # silent period between pulses
 
 A = np.zeros((n_peaks * n_pulses_peak, 6))
 
@@ -27,22 +27,22 @@ A = np.zeros((n_peaks * n_pulses_peak, 6))
 # Split first the pulses into peaks, we'll sort by time onset later
 # Iterate over peaks
 for i in range(n_peaks):
-    A[:n_pulses_peak,2] = np.degrees(
+    A[:n_pulses_peak, 2] = np.degrees(
         np.random.vonmises(mu=np.radians(mus[i][0] * 2), kappa=dispersion,
                            size=(n_pulses_peak))) / 2
-    A[:n_pulses_peak,3] = np.degrees(
+    A[:n_pulses_peak, 3] = np.degrees(
         np.random.vonmises(mu=np.radians(mus[i][1] * 2), kappa=dispersion,
                            size=(n_pulses_peak))) / 2
-    A[:n_pulses_peak,0] = onset + i * (duration + interpulse_sep) + \
-                    np.arange(0, n_peaks * (duration + interpulse_sep)
-                              * n_pulses_peak,
-                              n_peaks * (duration + interpulse_sep))
+    A[:n_pulses_peak, 0] = onset + i * (duration + interpulse_sep) + \
+        np.arange(0, n_peaks * (duration + interpulse_sep)
+                  * n_pulses_peak,
+                  n_peaks * (duration + interpulse_sep))
 # Common values for both peaks
-A[:,1] = duration * np.ones(n_peaks * n_pulses_peak)
-A[:,4] = Imax * np.ones(n_peaks * n_pulses_peak)
-A[:,5] = concentration * np.ones(n_peaks * n_pulses_peak)
+A[:, 1] = duration * np.ones(n_peaks * n_pulses_peak)
+A[:, 4] = Imax * np.ones(n_peaks * n_pulses_peak)
+A[:, 5] = concentration * np.ones(n_peaks * n_pulses_peak)
 
-A = A[np.argsort(A[:,0])]
+A = A[np.argsort(A[:, 0])]
 
 init_string = '''#
 # Configuration of external inputs
@@ -72,12 +72,10 @@ init_string += '''#
 
 numbers = ['one', 'two', 'three', 'four']
 fname = 'i_2D_%s_peaks.txt' % numbers[n_peaks-1]
-fin = open(fname, 'w')
-fin.write(init_string)
-for i in range(len(A)):
-    fin.write('% 10.1f % 9.1f % 8.1f % 8.1f % 8.1f % 9.1f\n' % (A[i,0], A[i,1],
-                                                                A[i,2], A[i,3],
-                                                                A[i,4], A[i,5]))
+with open(fname, 'w') as fin:
+    fin.write(init_string)
+    for i in range(len(A)):
+        fin.write('% 10.1f % 9.1f % 8.1f % 8.1f % 8.1f % 9.1f\n' % (
+            A[i, 0], A[i, 1], A[i, 2], A[i, 3], A[i, 4], A[i, 5]))
 
-print 'Input data saved in ' + fname + '.'
-fin.close()
+    print('Input data saved in ' + fname + '.')

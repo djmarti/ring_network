@@ -3,23 +3,39 @@ Code for the network of rate units used in the article ['Dynamics of feature cat
 
 ## Installation and compilation
 Just get the code and compile the code with either `make` or [`scons`](http://www.scons.org) in the `ring_network` folder:
+
 ```shell
 git clone https://github.com/djmarti/ring_network
 cd ring_network
 make  # or scons
 ```
+This will create a file called `simulate_trajectory`.
+
+The code relies on the [GNU Scientific Library](https://www.gnu.org/software/gsl/). To install it in a Debian-like box, run
+```
+apt-get install libgsl0ldbl libgsl0ldbl-dev
+```
+To install it on a Mac, run
+```
+brew install gsl
+```
+
+You can also install it by hand, downloading the source from [the official page](https://www.gnu.org/software/gsl/#downloading).
 
 ## Basic usage
-The main executable is `simulate_trajectory`. It simulates the time evolution of the activity of the ring network and stores the resulting activity in several datafiles, one per dynamical variable (firing rate and, if present, adaptation, facilitation, or depression). These activities are stored both in text format and in bitmap format.
+
+The main executable is `simulate_trajectory`. It simulates the time evolution of the activity of the ring network, and stores the resulting activity in several datafiles, one per dynamical variable (firing rate and, if present, adaptation, facilitation, or depression). These activities are stored both in text format and in bitmap format.
 
 A typical run of the executable would be
 ```shell
 ./simulate_trajectory -c config_pulse_sequences -x i_single_pulse
 ```
-where the file `config_pulse_sequences` is a configuration file specifying the network and synaptic parameters (see below), and `i_single_pulse` is an example of input descriptor, a file that describes the input pattern fed into the network (see below).
+where the file `config_pulse_sequences` is a configuration file specifying the network and synaptic parameters (see below), and `i_single_pulse` is an example of input descriptor, a file that describes the input pattern fed into the network (see below). You can find examples of configuration files under the `configurations` folder, and examples of input descriptors in the `example_input_patterns` folder.
 
 ### Configuration files
+
 A standard config file looks like the following:
+
 ```shell
 # Output files
 # ------------
@@ -61,23 +77,25 @@ m_rec_I = 1      # Concentration parameter inh. profile
 # Feedforward connections (irrelevant if N_layers = 1)
 J_ff_E = 5.0     # Coefficient excitatory profile
 J_ff_I = 0.2     # Coefficient inhibitory profile
-m_ff_E = 10      # Concentration parameter exc. profile 
+m_ff_E = 10      # Concentration parameter exc. profile
 m_ff_I = 1       # Concentration parameter inh. profile
 ```
+
 The example should be self-explanatory.
 
 ### Input descriptors
+
 This type of file describes how the network is stimulated. A self-descriptive example of an input descriptor is the following:
 ```
 #
-# Configuration of external inputs 
+# Configuration of external inputs
 #
 # Each line specifies the characteristics of a particular pulse of stimulation,
 # and is structured in 5 different fields separated by spaces. The order of the
-# fields is: 
-#     1. time onset of the pulse, 
+# fields is:
+#     1. time onset of the pulse,
 #     2. duration of the pulse
-#     3. angle (in degrees) where the pulse is applied, 
+#     3. angle (in degrees) where the pulse is applied,
 #     4. intensity of the pulse,
 #     5. concentration of the pulse (in a von Mises distribution)
 #
@@ -88,6 +106,7 @@ This type of file describes how the network is stimulated. A self-descriptive ex
 ```
 
 ## License
+
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.

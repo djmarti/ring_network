@@ -1,29 +1,34 @@
 #!/usr/bin/env python
-"""This script generates an 'input' data file specifying the time onset,
+"""
+This script generates an 'input' data file specifying the time onset,
 duration, location, concentration, and intensity of each pulse in the input
-stream. The data could have been entered by hand, but the script comes in
-handy when the input stream contains more than 5 pulses."""
+stream. The data could have been entered by hand, but the script comes in handy
+when the input stream contains more than 5 pulses.
+"""
 
 import numpy as np
 from numpy import pi
 from random import sample
 
 # Peaks of stimulus features
-mus = { 'one_peak': [0], \
-        'two_peaks': [-pi/4, pi/4], \
-        'two_closer_peaks': [-pi/10, pi/10], \
-        'two_broad_peaks': [-pi/4, pi/4], \
-        'three_peaks': [-pi/3, 0, pi/3], \
-        'four_peaks': [-3*pi/8, -pi/8, pi/8, 3*pi/8] }
 
-dispersion = { 'one_peak': 50,\
-               'two_peaks': 50,\
-               'two_closer_peaks': 50,\
-               'two_broad_peaks': 5,\
-               'three_peaks': 50, \
-               'four_peaks': 50 }
+mus = {
+    'one_peak': [0],
+    'two_peaks': [-pi/4, pi/4],
+    'two_closer_peaks': [-pi/10, pi/10],
+    'two_broad_peaks': [-pi/4, pi/4],
+    'three_peaks': [-pi/3, 0, pi/3],
+    'four_peaks': [-3*pi/8, -pi/8, pi/8, 3*pi/8]
+}
 
-configs = mus.keys()
+dispersion = {
+    'one_peak': 50,
+    'two_peaks': 50,
+    'two_closer_peaks': 50,
+    'two_broad_peaks': 5,
+    'three_peaks': 50,
+    'four_peaks': 50
+}
 
 T_max = 20.
 duration = 0.1  # 0.25 for three_random_peaks and four_random_peaks
@@ -34,10 +39,11 @@ I_s = 0.2
 concentration = 10
 n_params = 5
 
-for c in configs:
+for c in mus:
     n_peaks = len(mus[c])
-    n_pulses_peak = int( (T_max - onset) / ( (duration + gap_between_pulses)
-                                            * n_peaks ) )
+    n_pulses_peak = int(
+        (T_max - onset) /
+        ((duration + gap_between_pulses) * n_peaks))
     n_rows = n_peaks * n_pulses_peak
     A = np.zeros((n_rows, n_params))
 
@@ -45,30 +51,30 @@ for c in configs:
     for i, mu in enumerate(mus[c]):
         init = i * n_pulses_peak
         end = (i + 1) * n_pulses_peak
-        A[init:end, 2] = np.degrees(np.random.vonmises(mu=mu * 2,
-                                                       kappa=dispersion[c],
-                                                       size=(n_pulses_peak)))/ 2
-        #A[init:end, 2] = mu * ones(n_pulses_peak)
-    indices = np.arange(n_rows)
+        A[init:end, 2] = np.degrees(
+            np.random.vonmises(mu=mu * 2,
+                               kappa=dispersion[c],
+                               size=(n_pulses_peak))) / 2
+    indices = np.arange(n_rows).tolist()
 
     # Uncomment this if you want a really random process
     indices_shff = np.array(sample(indices, n_rows))
 
-    # This will generate an alternating sequence
-    #indices_resorted = zeros_like(indices)
-    #for i in arange(n_peaks):
-    #    init = i * n_pulses_peak
-    #    end = (i + 1) * n_pulses_peak
-    #    indices_resorted[init:end] = arange(i, n_rows, n_peaks)
+    # This will generate an alternating sequence:
+    # indices_resorted = zeros_like(indices)
+    # for i in arange(n_peaks):
+    #     init = i * n_pulses_peak
+    #     end = (i + 1) * n_pulses_peak
+    #     indices_resorted[init:end] = arange(i, n_rows, n_peaks)
 
     # Common values for both peaks
-    A[:,0] = onset + indices_shff * (duration + gap_between_pulses)
-    #A[:,0] = onset + indices_resorted * (duration + gap_between_pulses)
-    A[:,1] = duration * np.ones(n_rows)
-    A[:,3] = I_s * np.ones(n_rows)
-    A[:,4] = concentration * np.ones(n_rows)
+    A[:, 0] = onset + indices_shff * (duration + gap_between_pulses)
+    # A[:, 0] = onset + indices_resorted * (duration + gap_between_pulses)
+    A[:, 1] = duration * np.ones(n_rows)
+    A[:, 3] = I_s * np.ones(n_rows)
+    A[:, 4] = concentration * np.ones(n_rows)
 
-    A = A[np.argsort(A[:,0])]
+    A = A[np.argsort(A[:, 0])]
 
     ## ----------------------------------------------------------
     ## Apply a slow drift at the end of
@@ -100,8 +106,9 @@ for c in configs:
     init_string += """#
 # Single pulses
 #   Each line specifies the characteristics of a particular pulse of stimulation,
-#   and is structured in 5 different fields separated by spaces. The order of the
+#   and is structured in 5 different fields, separated by spaces. The order of the
 #   fields is:
+#
 #       1. time onset of the pulse,
 #       2. duration of the pulse
 #       3. angle (in degrees) where the pulse is applied,
@@ -115,12 +122,10 @@ for c in configs:
     fname = "i_%s_really_shuffled" % c
     #fname = "i_%s_peak_with_drift" % numbers[n_peaks-1]
     #fname = "test"
-    fin = open(fname, "w")
-    fin.write(init_string)
-    for i in range(len(A)):
-        fin.write("% 12.2f % 11.2f % 10.2f % 8.2f % 15.2f\n" % (A[i,0], A[i,1],
-                                                                A[i,2], A[i,3],
-                                                                A[i,4]))
+    with open(fname, "w") as fin:
+        fin.write(init_string)
+        for i in range(len(A)):
+            fin.write("% 12.2f % 11.2f % 10.2f % 8.2f % 15.2f\n" % (
+                A[i, 0], A[i, 1], A[i, 2], A[i, 3], A[i, 4]))
 
-    print "Input data saved in '%s'." % fname
-    fin.close()
+        print(f"Input data saved in '{fname}'.")

@@ -9,14 +9,14 @@ LIBS = -lm -lgsl -lgslcblas -lring_network
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
-# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file)
 # (see the gnu make manual section about automatic variables)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 MAIN = simulate_trajectory
 
-all: libring_network.a $(MAIN) 
+all: libring_network.a $(MAIN)
 
 libring_network.a: $(OBJS)
 	$(AR) rcs $@ $^
